@@ -14,7 +14,7 @@ const NameSearch = () => {
         <form>
         Search by name: <input type='text' value={filter} onChange={handleFilterChange} />
         </form>
-        <FilteredRecipes filter={filter} searchType={'s'}/>
+        <FilteredRecipes filter={filter} searchType={'/search.php?s'}/>
     </>
   )
 }

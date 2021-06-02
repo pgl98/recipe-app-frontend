@@ -2,15 +2,15 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 
 /*
-    searchType: 's' to filter meal by name
-                'i' to filter by ingredients
+    searchType: '/search.php?s={name}' to filter meal by name
+                '/filter.php?i={ingredients}' to filter by ingredients
 */
 const FilteredRecipes = ({ filter, searchType }) => {
     const baseURL = 'https://www.themealdb.com/api/json/v1/1'
     const [ recipes, setRecipes ] = useState([])
 
     useEffect(() => {
-      axios.get(`${baseURL}/search.php?${searchType}=${filter}`)
+      axios.get(`${baseURL}/${searchType}=${filter}`)
         .then(response => {
           if (response.data.meals) setRecipes(response.data.meals)
           else setRecipes([])
@@ -18,7 +18,8 @@ const FilteredRecipes = ({ filter, searchType }) => {
         .catch(error => console.error(error.message))
     }, [filter, searchType])
 
-    if(searchType !== 'i' && searchType !== 's') console.error('Search type must be either "i" or "s".')
+    if(searchType !== '/filter.php?i' && searchType !== '/search.php?s') 
+        console.error('Search type must be either "/filter.php?i" or "/search.php?s".')
 
     if (filter === '') return (<>Search for recipes</>)
 
