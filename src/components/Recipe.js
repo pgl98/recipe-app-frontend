@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { useParams } from 'react-router'
 
-const Recipe = ({ recipeId }) => {
+const Recipe = () => {
     const [ recipeInfo, setRecipeInfo ] = useState('')
+    const { recipeId } = useParams()
 
     useEffect(() => {
         const getRecipe = async () => {
@@ -14,24 +16,22 @@ const Recipe = ({ recipeId }) => {
 
     const name = recipeInfo.strMeal
     const category = recipeInfo.strCategory
+    const tags = recipeInfo.strTags
     const instructions = recipeInfo.strInstructions
     const thumbnail = recipeInfo.strMealThumb
     const youtube = recipeInfo.strYoutube
     let ingredients = []
 
-    for(let i = 0; i< 20; i++) {
+    for(let i = 1; i < 21; i++) {
         if(recipeInfo[`strIngredient${i}`]) ingredients[i] = recipeInfo[`strIngredient${i}`] + " " + recipeInfo[`strMeasure${i}`]
     }
-
-    console.log(recipeInfo)
-    console.log(recipeInfo.strMeal)
-    console.log(ingredients)
 
     return (
         <div>
             <h2>{name}</h2>
-            <h3>{category}</h3>
-            <img src={thumbnail} alt="final product" />
+            <h3>{tags}</h3>
+            <h4>{category}</h4>
+            <img src={thumbnail} alt="final product" width="100" />
             <ul>{ingredients.map(ingredient => <li key={ingredient}>{ingredient}</li>)}</ul>
             <p>{instructions}</p>
         </div>

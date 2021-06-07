@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 /*
     searchType: '/search.php?s={name}' to filter meal by name
@@ -30,9 +31,15 @@ const FilteredRecipes = ({ filter, searchType }) => {
     )
 
     return(
-      <>
-        {recipes.map(recipe => <p key={recipe.idMeal}>{recipe.strMeal}</p>)}
-      </>
+      <div>
+        {recipes.map(recipe => 
+          <p key={recipe.idMeal}>
+            <Link to={`/recipes/${recipe.idMeal}`}>
+              {recipe.strMeal}
+            </Link>
+          </p>
+        )}
+      </div>
     )
 }
 
