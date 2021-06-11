@@ -2,7 +2,31 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useParams } from 'react-router'
 
+import { Typography } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import Grid from '@material-ui/core/Grid'
+import Card from '@material-ui/core/Card'
+import CardHeader from '@material-ui/core/CardHeader'
+import CardMedia from '@material-ui/core/CardMedia'
+import Container from '@material-ui/core/Container'
+import CircularProgress from '@material-ui/core/CircularProgress'
+
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        
+    },
+    media: {
+        height: 500,
+        width: "100%",
+    }
+}))
+
 const Recipe = () => {
+    const classes = useStyles()
     const [ recipeInfo, setRecipeInfo ] = useState('')
     const { recipeId } = useParams()
 
@@ -22,21 +46,59 @@ const Recipe = () => {
     const youtube = recipeInfo.strYoutube
     // https://www.youtube.com/watch?v={embedId}}
     const ytEmbedId = youtube ? youtube.substring(32): null
-    console.log(`https:www.youtube.com/watch?v=${ytEmbedId}`)
     let ingredients = []
 
     for(let i = 1; i < 21; i++) {
-        if(recipeInfo[`strIngredient${i}`]) ingredients[i] = recipeInfo[`strIngredient${i}`] + " " + recipeInfo[`strMeasure${i}`]
+        if(recipeInfo[`strIngredient${i}`]) ingredients[i] = recipeInfo[`strMeasure${i}`] + " " + recipeInfo[`strIngredient${i}`]
     }
 
     return (
-        <div>
-            <h2>{name}</h2>
-            <h3>{tags}</h3>
-            <h4>{category}</h4>
-            <img src={thumbnail} alt="final product" width="100" />
-            <ul>{ingredients.map(ingredient => <li key={ingredient}>{ingredient}</li>)}</ul>
-            <p>{instructions}</p>
+        <>
+            <Container>
+                <Grid container spacing={2}>
+                    <Grid item xs={12} md={12}>
+                        <Card className={classes.root}>
+                            <CardHeader
+                                title={name}
+                                subheader={category}
+                            />
+                            {thumbnail ? (
+                                <CardMedia
+                                    className={classes.media}
+                                    component="img"
+                                    src={thumbnail}
+                                    title={name}
+                                />) : (<CircularProgress />)}
+                        </Card>
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                        <Card>
+                            <CardHeader
+                                title="Ingredients"
+                            />
+                                <List dense className={classes.list}>
+                                    {ingredients.map((ingredient) => (
+                                        <ListItem key={ingredient}>
+                                            <ListItemText primary={ingredient}/>
+                                        </ListItem>
+                                    ))}
+                                </List>
+                        </Card>
+                    </Grid>
+                    <Grid item xs={12} md={8}>
+                        <Card>
+                            <CardHeader
+                                title="Instructions"
+                            />
+                            <Typography variant="body1">{instructions}</Typography>
+                        </Card>
+                    </Grid>
+                </Grid>
+            </Container>
+        </>
+    )
+}
+/*
             <div>
                 <iframe
                     width="853"
@@ -48,8 +110,6 @@ const Recipe = () => {
                     title='Embedded youtube'
                 ></iframe>
             </div>
-        </div>
-    )
-}
+*/
 
 export default Recipe
