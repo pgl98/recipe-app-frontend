@@ -38,60 +38,71 @@ const Recipe = () => {
         getRecipe()
     }, [recipeId])
 
-    const name = recipeInfo.strMeal
-    const category = recipeInfo.strCategory
-    const tags = recipeInfo.strTags
-    const instructions = recipeInfo.strInstructions
-    const thumbnail = recipeInfo.strMealThumb
     const youtube = recipeInfo.strYoutube
     // https://www.youtube.com/watch?v={embedId}}
-    const ytEmbedId = youtube ? youtube.substring(32): null
+    const ytEmbedId = youtube ? youtube.substring(32) : null
     let ingredients = []
 
+    // Look at MealDB api to see why this loop starts with index 1
     for(let i = 1; i < 21; i++) {
         if(recipeInfo[`strIngredient${i}`]) ingredients[i] = recipeInfo[`strMeasure${i}`] + " " + recipeInfo[`strIngredient${i}`]
     }
+
+    const RecipeCard = ({ name, category, thumbnail }) => {
+        return (
+            <Card className={classes.root}>
+                <CardHeader
+                    title={name}
+                    subheader={category}
+                />
+                {thumbnail ? (
+                    <CardMedia
+                        className={classes.media}
+                        component="img"
+                         src={thumbnail}
+                        title={name}
+                />) : (<CircularProgress />)}
+            </Card>
+        )}
+
+    const IngredientsList = ({ ingredients }) => {
+        return (
+            <>
+                <Typography variant="h6">Ingredients:</Typography>
+                <List dense className={classes.list}>
+                    {ingredients.map((ingredient) => (
+                        <ListItem key={ingredient}>
+                            <ListItemText primary={ingredient}/>
+                        </ListItem>
+                    ))}
+                </List>
+            </>
+        )}
+
+    const Instructions = ({ instructions }) => {
+        return (
+            <>
+                <Typography variant="h6">Instructions:</Typography>
+                <Typography variant="body1">{instructions}</Typography>
+            </>
+        )}
 
     return (
         <>
             <Container>
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={12}>
-                        <Card className={classes.root}>
-                            <CardHeader
-                                title={name}
-                                subheader={category}
-                            />
-                            {thumbnail ? (
-                                <CardMedia
-                                    className={classes.media}
-                                    component="img"
-                                    src={thumbnail}
-                                    title={name}
-                                />) : (<CircularProgress />)}
-                        </Card>
+                        <RecipeCard
+                            name={recipeInfo.strMeal}
+                            category={recipeInfo.strCategory}
+                            thumbnail={recipeInfo.strMealThumb}
+                        />
                     </Grid>
-                    <Grid item xs={12} md={4}>
-                        <Card>
-                            <CardHeader
-                                title="Ingredients"
-                            />
-                                <List dense className={classes.list}>
-                                    {ingredients.map((ingredient) => (
-                                        <ListItem key={ingredient}>
-                                            <ListItemText primary={ingredient}/>
-                                        </ListItem>
-                                    ))}
-                                </List>
-                        </Card>
+                    <Grid item xs={12} md={2}>
+                        <IngredientsList ingredients={ingredients} />
                     </Grid>
-                    <Grid item xs={12} md={8}>
-                        <Card>
-                            <CardHeader
-                                title="Instructions"
-                            />
-                            <Typography variant="body1">{instructions}</Typography>
-                        </Card>
+                    <Grid item xs={12} md={10}>
+                        <Instructions instructions={recipeInfo.strInstructions} />
                     </Grid>
                 </Grid>
             </Container>
