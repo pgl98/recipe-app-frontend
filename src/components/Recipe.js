@@ -3,7 +3,6 @@ import axios from 'axios'
 import { useParams } from 'react-router'
 
 import { Typography } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
@@ -15,15 +14,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        
-    },
-    media: {
-        height: 500,
-        width: "100%",
-    }
-}))
+import useStyles from '../styles/styles'
 
 const Recipe = () => {
     const classes = useStyles()
@@ -67,7 +58,7 @@ const Recipe = () => {
 
     const IngredientsList = ({ ingredients }) => {
         return (
-            <>
+            <div>
                 <Typography variant="h6">Ingredients:</Typography>
                 <List dense className={classes.list}>
                     {ingredients.map((ingredient) => (
@@ -76,19 +67,19 @@ const Recipe = () => {
                         </ListItem>
                     ))}
                 </List>
-            </>
+            </div>
         )}
 
     const Instructions = ({ instructions }) => {
         return (
-            <>
+            <div>
                 <Typography variant="h6">Instructions:</Typography>
                 <Typography variant="body1">{instructions}</Typography>
-            </>
+            </div>
         )}
 
     return (
-        <>
+        <div className={classes.container}>
             <Container>
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={12}>
@@ -106,7 +97,7 @@ const Recipe = () => {
                     </Grid>
                 </Grid>
             </Container>
-        </>
+        </div>
     )
 }
 /*
