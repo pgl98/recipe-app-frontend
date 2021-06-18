@@ -29,9 +29,9 @@ const Recipe = () => {
         getRecipe()
     }, [recipeId])
 
-    const youtube = recipeInfo.strYoutube
+    //const youtube = recipeInfo.strYoutube
     // https://www.youtube.com/watch?v={embedId}}
-    const ytEmbedId = youtube ? youtube.substring(32) : null
+    //const ytEmbedId = youtube ? youtube.substring(32) : null
     let ingredients = []
 
     // Look at MealDB api to see why this loop starts with index 1

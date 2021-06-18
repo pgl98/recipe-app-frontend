@@ -13,7 +13,6 @@ const useStyles = makeStyles((theme) => ({
     },
     searchBar: {
         padding: theme.spacing(10, 0, 6),
-        width: '25ch',
     }
 }))
 
